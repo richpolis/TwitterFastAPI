@@ -131,7 +131,24 @@ def update_a_user():
     tags=["Tweets"]
 )
 def show_all_tweets():
-    return {"Twitter API": "Working!"}
+    """
+    Show all tweets
+
+    This path operation show all tweets in the app
+
+    Parameters:
+        - 
+    
+    Returns a json with the basic user information, with the following keys:
+        - tweet_id: UUID
+        - content: str
+        - created_at: datetime
+        - updated_at: datetime
+        - by: User
+    """
+    with open('tweets.json', 'r', encoding='UTF-8') as f:
+        results = json.loads(f.read())
+        return results
 
 
 ### Register Tweet
