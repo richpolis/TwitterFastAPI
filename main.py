@@ -81,7 +81,7 @@ def show_all_users():
         - email: EmailStr
         - first_name: str
         - last_name: str
-        - birth_date: date
+        - birth_date: datetime
     """
     with open('users.json', 'r', encoding='UTF-8') as f:
         results = json.loads(f.read())
@@ -142,8 +142,36 @@ def show_all_tweets():
     summary="Register a Tweet", 
     tags=["Tweets"]
 )
-def create_tweet():
-    pass 
+def create_tweet(tweet: Tweet = Body(...)):
+    """
+    Post a tweet
+
+    This path operation post a tweet in the app 
+
+    Parameters:
+        - Request body parameter
+            - tweet: Tweet
+    
+    Returns a json with the basic user information:
+        - tweet_id: UUID
+        - content: str
+        - created_at: datetime
+        - updated_at: Optional[datetime]
+        - by: User
+    """
+    with open('tweets.json', 'r+', encoding='UTF-8') as f:
+        results = json.loads(f.read())
+        tweet_dict = tweet.dict()
+        tweet_dict['tweet_id'] = str(tweet_dict['tweet_id'])
+        tweet_dict['created_at'] = str(tweet_dict['created_at'])
+        if 'updated_at' in tweet_dict:
+            tweet_dict['updated_at'] = str(tweet_dict['updated_at'])
+        tweet_dict['by']['user_ui'] = str(tweet_dict['by']['user_ui'])
+        tweet_dict['by']['birth_date'] = str(tweet_dict['by']['birth_date']) 
+        results.append(tweet_dict)
+        f.seek(0)
+        f.write(json.dumps(results))
+        return tweet
 
 
 ### Show a tweet 
