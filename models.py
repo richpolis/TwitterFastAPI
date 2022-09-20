@@ -25,6 +25,9 @@ class User(UserBase):
     last_name: str = Field(..., min_length=1, max_length=50)
     birth_date: Optional[date] = Field(default=None)
 
+class UserRegister(User, UserLogin):
+    pass
+
 
 class Tweet(BaseModel):
     tweet_id : UUID = Field(...)
